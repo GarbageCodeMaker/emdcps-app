@@ -68,17 +68,21 @@
 </template>
 
 <script lang="ts">
+import { reactive, toRefs } from 'vue';
+
 export default {
-  name: 'home',
-  data() {
-    return {
-      logoUrl: '',
-    };
-  },
-  methods: {
-    handleSelect() {
+  setup() {
+    const state = reactive({
+      items: [],
+    });
+    const handleSelect = () => {
       console.log('select');
-    },
+    };
+
+    return {
+      ...toRefs(state),
+      handleSelect,
+    };
   },
 };
 </script>
