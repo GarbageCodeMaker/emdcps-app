@@ -48,11 +48,12 @@
   </div>
 </template>
 
-<script lang="ts" scoped>
+<script lang="ts">
+import { reactive, toRefs } from 'vue';
+
 export default {
-  name: 'login',
-  data() {
-    return {
+  setup() {
+    const state = reactive({
       loginForm: {
         userName: '',
         password: '',
@@ -60,14 +61,19 @@ export default {
       },
       loginLoading: false,
       loginDisabled: false,
+    });
+
+    const handleLogin = () => {
+      state.loginLoading = true;
+      state.loginDisabled = true;
+      // TODO
+      console.log('登录');
     };
-  },
-  methods: {
-    handleLogin(): void {
-      // this.loginDisabled = true;
-      // this.loginLoading = true;
-      // TODO axios请求登录
-    },
+
+    return {
+      ...toRefs(state),
+      handleLogin,
+    };
   },
 };
 </script>

@@ -75,41 +75,21 @@
 </template>
 
 <script lang="ts">
+import { reactive, toRefs } from 'vue';
+
 export default {
-  name: 'home',
-  data() {
-    return {
-      logoUrl: '',
-      leftNavItems: [
-        {
-          navName: '首页',
-          path: '/home',
-          index: '1',
-        },
-        {
-          navName: '测试',
-          path: '',
-          index: '2',
-          children: [
-            {
-              navName: 'test1',
-              path: '/test1',
-              index: '2-1',
-            },
-            {
-              navName: 'test2',
-              path: '/test2',
-              index: '2-2',
-            },
-          ],
-        },
-      ],
-    };
-  },
-  methods: {
-    handleSelect() {
+  setup() {
+    const state = reactive({
+      items: [],
+    });
+    const handleSelect = () => {
       console.log('select');
-    },
+    };
+
+    return {
+      ...toRefs(state),
+      handleSelect,
+    };
   },
 };
 </script>
