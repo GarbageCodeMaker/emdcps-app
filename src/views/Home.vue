@@ -5,8 +5,7 @@
     background-color="#0082c9"
     text-color="#fff"
     active-text-color="#6ad4c0"
-    @select="handleSelect"
-    class="el-menu-demo">
+    @select="handleSelect">
     <el-menu-item index="1">
       <el-image
         :src="require('@/assets/images/logo.png')"
@@ -51,19 +50,27 @@
   <el-menu
     default-active="1"
     :collapse="false"
-    class="el-menu-vertical-demo">
-    <el-menu-item index="1">
-      <i class="el-icon-setting"></i>
-      <template #title>Home</template>
-    </el-menu-item>
-    <el-menu-item index="2">
-      <i class="el-icon-document"></i>
-      <template #title>Nav1</template>
-    </el-menu-item>
-    <el-menu-item index="3">
-      <i class="el-icon-menu"></i>
-      <template #title>Nav2</template>
-    </el-menu-item>
+    background-color="#0082c9"
+    text-color="#fff"
+    active-text-color="#6ad4c0"
+    @select="handleSelect"
+    class="left-nav">
+    <div v-for="(index, item) in leftNavItems" :key="index">
+      <el-menu-item v-if="!item.children" :index="item.index">
+        <i class="el-icon-setting"></i>
+        <template #title>{{ item.navName }}</template>
+      </el-menu-item>
+      <el-menu-item-group v-if="item.children">
+        <template #title>{{ item.navName }}</template>
+        <el-menu-item
+          v-for="(i, child) in item"
+          :key="i"
+          :index="child.index">
+          <i class="el-icon-setting"></i>
+          <template #title>{{ child.navName }}</template>
+        </el-menu-item>
+      </el-menu-item-group>
+    </div>
   </el-menu>
 </template>
 
@@ -73,6 +80,30 @@ export default {
   data() {
     return {
       logoUrl: '',
+      leftNavItems: [
+        {
+          navName: '首页',
+          path: '/home',
+          index: '1',
+        },
+        {
+          navName: '测试',
+          path: '',
+          index: '2',
+          children: [
+            {
+              navName: 'test1',
+              path: '/test1',
+              index: '2-1',
+            },
+            {
+              navName: 'test2',
+              path: '/test2',
+              index: '2-2',
+            },
+          ],
+        },
+      ],
     };
   },
   methods: {
@@ -104,5 +135,8 @@ export default {
 }
 .avatar {
   margin-right: 10px;
+}
+.left-nav {
+  width: 200px;
 }
 </style>

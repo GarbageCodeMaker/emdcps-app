@@ -63,9 +63,9 @@ export default {
     };
   },
   methods: {
-    handleLogin() {
-      this.loginDisabled = true;
-      this.loginLoading = true;
+    handleLogin(): void {
+      // this.loginDisabled = true;
+      // this.loginLoading = true;
       // TODO axios请求登录
     },
   },
