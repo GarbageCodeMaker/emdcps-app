@@ -45,6 +45,7 @@ $cusTitleH: 20px;
     letter-spacing: 2px;
   }
   .tool {
+    float: right;
     cursor: pointer;
   }
 }

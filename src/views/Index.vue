@@ -20,6 +20,36 @@
           <template v-slot:default>隐患统计</template>
           <template v-slot:tool>高级查看</template>
         </component>
+        <el-table
+          :data="hiddenDangerTableData"
+          :summary-method="hiddenDangerSummaries"
+          border
+          show-summary>
+          <el-table-column
+            prop="line"
+            label="线路"
+            width=""></el-table-column>
+          <el-table-column
+            prop="oneLevel"
+            label="一级"
+            width=""></el-table-column>
+          <el-table-column
+            prop="twoLevel"
+            label="二级"
+            width=""></el-table-column>
+          <el-table-column
+            prop="treeLevel"
+            label="三级"
+            width=""></el-table-column>
+          <el-table-column
+            prop="fourLevel"
+            label="四级"
+            width=""></el-table-column>
+          <el-table-column
+            prop="sum"
+            label="合计"
+            width=""></el-table-column>
+        </el-table>
       </div>
       <!-- 预警统计表 -->
       <div></div>
@@ -48,15 +78,49 @@ export default {
 
     const state = reactive({
       titleComponent: markCusTitle,
+      hiddenDangerTableData: [
+        {
+          line: '',
+          oneLevel: '',
+          twoLevel: '',
+          treeLevel: '',
+          fourLevel: '',
+          sum: '',
+        },
+      ],
     });
-
+    // 自定义标题栏组件点击按钮事件
     const toolTarget = (target: string) => {
       console.log(target);
+    };
+    // 隐患上报表格合计行方法
+    const hiddenDangerSummaries = (param: object): Array<string> => {
+      const { columns, data } = param;
+      const sums: Array<string> = [];
+
+      columns.forEach((column, index) => {
+        if (index === 0) {
+          sums[index] = '合计';
+        }
+        const values = data.map((item) => Number(item[column.property]));
+        if (!values.every((value) => Number.isNaN(value))) {
+          sums[index] = values.reduce((prev, curr) => {
+            const value = Number(curr);
+            if (!Number.isNaN(value)) return prev + curr;
+            return prev;
+          }, 0);
+          sums[index] = `${sums[index]} 元`;
+        } else {
+          sums[index] = 'N/A';
+        }
+      });
+      return sums;
     };
 
     return {
       ...toRefs(state),
       toolTarget,
+      hiddenDangerSummaries,
     };
   },
 };
