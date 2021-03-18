@@ -95,7 +95,7 @@ export default {
     };
     // 隐患上报表格合计行方法
     const hiddenDangerSummaries = (param: object): Array<string> => {
-      const { columns, data } = param;
+      const { columns, data }: any = param;
       const sums: Array<string> = [];
 
       columns.forEach((column, index) => {
