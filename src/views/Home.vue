@@ -5,7 +5,8 @@
     background-color="#0082c9"
     text-color="#fff"
     active-text-color="#6ad4c0"
-    @select="handleSelect">
+    @select="headNavSelect"
+    class="head-nav">
     <el-menu-item index="1">
       <el-image
         :src="require('@/assets/images/logo.png')"
@@ -48,53 +49,105 @@
   </el-menu>
   <!-- 左侧导航条 -->
   <el-menu
+    :unique-opened="true"
     default-active="1"
     :collapse="false"
     background-color="#0082c9"
     text-color="#fff"
     active-text-color="#6ad4c0"
-    @select="handleSelect"
+    @select="leftNavSelect"
     class="left-nav">
-    <div v-for="(index, item) in leftNavItems" :key="index">
-      <el-menu-item v-if="!item.children" :index="item.index">
+    <div v-for="(item, index) in leftNavItems" :key="index">
+      <el-menu-item
+        v-if="!item.children"
+        :index="item.index">
         <i class="el-icon-setting"></i>
         <template #title>{{ item.navName }}</template>
       </el-menu-item>
-      <el-menu-item-group v-if="item.children">
-        <template #title>{{ item.navName }}</template>
+      <el-submenu v-else :index="item.index">
+        <template #title>
+          <i class="el-icon-setting"></i>
+          <span>{{ item.navName }}</span>
+        </template>
         <el-menu-item
-          v-for="(i, child) in item"
+          v-for="(child, i) in item.children"
           :key="i"
           :index="child.index">
           <i class="el-icon-setting"></i>
           <template #title>{{ child.navName }}</template>
         </el-menu-item>
-      </el-menu-item-group>
+      </el-submenu>
     </div>
   </el-menu>
+  <!-- 页面主体内容展示区 -->
+  <component :is="Component"></component>
 </template>
 
-<script lang="ts">
-import { reactive, toRefs } from 'vue';
+<script lang="ts" scoped>
+import {
+  defineAsyncComponent, markRaw, reactive, toRefs,
+} from 'vue';
 
 export default {
+  name: 'Home',
   setup() {
+    const asyncComponents = defineAsyncComponent(() => import('../components/ContentAreaDisplay.vue'));
+    const markComponents = markRaw(asyncComponents);
+
     const state = reactive({
-      items: [],
+      transitionName: 'slide-left',
+      Component: markComponents,
+      leftNavItems: [
+        {
+          index: '1',
+          navName: '首页',
+          path: '/home',
+        },
+        {
+          index: '2',
+          navName: '测试',
+          children: [
+            {
+              index: '2-1',
+              navName: 'test1',
+              path: '/test1',
+            },
+            {
+              index: '2-2',
+              navName: 'test2',
+              path: '/test2',
+            },
+          ],
+        },
+      ],
     });
-    const handleSelect = () => {
-      console.log('select');
+    // 头部导航栏选择事件
+    const headNavSelect = (index: string) => {
+      console.log(index);
+    };
+    // 左侧导航栏选择事件
+    const leftNavSelect = (index: string, indexPath: Array<string>) => {
+      console.log(index);
+      console.log(indexPath);
     };
 
     return {
       ...toRefs(state),
-      handleSelect,
+      headNavSelect,
+      leftNavSelect,
     };
   },
 };
 </script>
 
 <style lang="scss" scoped>
+.head-nav {
+  grid-row-start: arvr1;
+  grid-row-end: arvr2;
+  grid-column-start: arvc1;
+  grid-column-end: arvc3;
+  border-bottom: none;
+}
 .logo {
   img {
     width: 70px;
@@ -117,6 +170,13 @@ export default {
   margin-right: 10px;
 }
 .left-nav {
-  width: 200px;
+  grid-row-start: arvr2;
+  grid-row-end: arvr3;
+  grid-column-start: arvc1;
+  grid-column-end: arvc2;
 }
+</style>
+
+<style lang="scss" scoped>
+
 </style>

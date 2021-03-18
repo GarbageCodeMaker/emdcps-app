@@ -1,29 +1,20 @@
-import { createApp } from 'vue';
+import { createApp, defineAsyncComponent } from 'vue';
 // Element-UI
 import ElementPlus from 'element-plus';
 import 'element-plus/lib/theme-chalk/index.css';
 import App from './App.vue';
 import router from './router';
 import store from './store';
+import subComponents from './util/subComponents';
 
-// router.beforeEach((to, from, next) => {
-//   if (to.matched.some(record => record.meta.requireAuth)) {
-//     console.log('需要登录');
-//     if (localStorage.token) {
-//       next();
-//     } else {
-//       next({
-//         path: '/',
-//         query: {
-//           redirect: to.fullPath,
-//         },
-//       });
-//     }
-//   }
-// });
+const app = createApp(App);
 
-createApp(App)
-  .use(ElementPlus)
+subComponents.forEach((item) => {
+  const component = defineAsyncComponent(() => import(`@/views/${item}.vue`));
+  app.component(item, component);
+});
+
+app.use(ElementPlus)
   .use(store)
   .use(router)
   .mount('#app');

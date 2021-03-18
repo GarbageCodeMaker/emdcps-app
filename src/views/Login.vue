@@ -48,10 +48,11 @@
   </div>
 </template>
 
-<script lang="ts">
+<script lang="ts" scoped>
 import { reactive, toRefs } from 'vue';
 
 export default {
+  name: 'Login',
   setup() {
     const state = reactive({
       loginForm: {
