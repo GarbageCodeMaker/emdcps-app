@@ -11,7 +11,7 @@
 
 <script lang="ts" scoped>
 export default {
-  name: 'App',
+  name: 'CusTitle',
   props: {
     titleType: {
       type: String,
@@ -38,14 +38,16 @@ $cusTitleH: 20px;
   width: 100%;
   height: $cusTitleH;
   line-height: $cusTitleH;
+  margin-bottom: 10px;
   background-color: #307ecc;
   color: #fff;
-  padding: 0 10px 0 10px;
   .text {
     letter-spacing: 2px;
+    padding-left: 10px;
   }
   .tool {
     float: right;
+    padding-right: 10px;
     cursor: pointer;
   }
 }

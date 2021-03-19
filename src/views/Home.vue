@@ -47,6 +47,11 @@
           <template #title>退出</template>
         </el-menu-item>
       </el-submenu>
+      <el-menu-item index="4" class="bell">
+        <el-badge :value="bellNum">
+            <i class="el-icon-bell bell-icon"></i>
+          </el-badge>
+      </el-menu-item>
     </el-menu>
     <!-- 左侧导航条 -->
     <el-menu
@@ -99,6 +104,7 @@ export default {
     const state = reactive({
       transitionName: 'slide-left',
       Component: markComponents,
+      bellNum: 0,
       leftNavItems: [
         {
           index: '1',
@@ -169,7 +175,14 @@ export default {
     font-size: 25px;
   }
   .user {
-    float: right !important;
+    float: right;
+  }
+  .bell {
+    float: right;
+    .bell-icon {
+      font-size: 20px;
+      color: #fff;
+    }
   }
   .font-white {
     color: #fff !important;
@@ -187,5 +200,14 @@ export default {
 </style>
 
 <style lang="scss" scoped>
-
+:deep(.el-badge__content) {
+  border: 1px solid #757474;
+}
+:deep(.el-badge__content.is-fixed) {
+  top: 20px;
+  right: 20px;
+}
+:deep(.el-badge__content--primary) {
+  background-color: #ff4040;
+}
 </style>

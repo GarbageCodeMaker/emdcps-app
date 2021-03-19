@@ -10,7 +10,11 @@
     </el-breadcrumb>
     <!-- 内容组件 -->
     <transition :name="transitionName">
-      <component :is="Component"></component>
+      <component
+        :is="Component"
+        :transferData="transferData"
+        @changeComponent="changeComponent"
+        class="cus-component"></component>
     </transition>
   </div>
 </template>
@@ -34,10 +38,17 @@ export default {
       ],
       transitionName: 'slide-left',
       Component: 'Index',
+      transferData: null,
     });
+
+    const changeComponent = (params: any) => {
+      state.Component = params.to;
+      state.transferData = params.hiddenDangerTableData;
+    };
 
     return {
       ...toRefs(state),
+      changeComponent,
     };
   },
 };
@@ -56,6 +67,10 @@ export default {
     background-color: #d2eefd;
     line-height: 30px;
     padding: 0 0 0 12px;
+  }
+  .cus-component {
+    overflow-x: hidden;
+    overflow-y: auto;
   }
 }
 </style>
