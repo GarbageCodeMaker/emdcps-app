@@ -182,6 +182,8 @@ export default {
     grid-row-end: arvr3;
     grid-column-start: arvc1;
     grid-column-end: arvc2;
+    overflow-x: hidden;
+    overflow-y: auto;
   }
 }
 </style>

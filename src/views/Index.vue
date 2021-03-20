@@ -7,7 +7,13 @@
       <el-tab-pane label="公司简介"></el-tab-pane>
       <el-tab-pane label="快轨新闻"></el-tab-pane>
       <el-tab-pane label="通知公告"></el-tab-pane>
-      <el-tab-pane label="最新风险视频"></el-tab-pane>
+      <el-tab-pane label="最新风险事件">
+        <component
+          v-for="(item, index) in riskEventItems"
+          :key="index"
+          :is="riskEventComponent"
+          :riskEventData="item.riskEventData"></component>
+      </el-tab-pane>
     </el-tabs>
     <!-- tables -->
     <div class="tables-panel">
@@ -150,93 +156,53 @@
 
 <script lang="ts" scoped>
 import {
-  defineAsyncComponent, markRaw, reactive, toRefs,
+  defineAsyncComponent, markRaw, onMounted, reactive, toRefs,
 } from 'vue';
+import Data from '../util/data';
 
 function importComponent(): object {
   const cusTitle = defineAsyncComponent(() => import('../components/CusTitle.vue'));
+  const riskEvent = defineAsyncComponent(() => import('../components/RiskEvent.vue'));
 
-  return cusTitle;
+  const markCusTitle = markRaw(cusTitle);
+  const markRiskEvent = markRaw(riskEvent);
+
+  return { markCusTitle, markRiskEvent };
 }
 
 export default {
   name: 'Index',
   emits: ['changeComponent'],
   setup(props, context) {
-    const cusTitle = importComponent();
-    const markCusTitle = markRaw(cusTitle);
-
+    const components: any = importComponent();
     const state = reactive({
-      titleComponent: markCusTitle,
-      hiddenDangerTableData: [
-        {
-          line: '11号线',
-          oneLevel: 0,
-          twoLevel: 39,
-          treeLevel: 2320,
-          fourLevel: 2202,
-          sum: 4561,
-        },
-        {
-          line: '16号线',
-          oneLevel: 0,
-          twoLevel: 1038,
-          treeLevel: 18781,
-          fourLevel: 13455,
-          sum: 33274,
-        },
-        {
-          line: '22号线',
-          oneLevel: 0,
-          twoLevel: 2,
-          treeLevel: 53,
-          fourLevel: 42,
-          sum: 97,
-        },
-        {
-          line: '机场西延',
-          oneLevel: 0,
-          twoLevel: 20,
-          treeLevel: 490,
-          fourLevel: 490,
-          sum: 1000,
-        },
-        {
-          line: '平西府',
-          oneLevel: 0,
-          twoLevel: 10,
-          treeLevel: 212,
-          fourLevel: 137,
-          sum: 359,
-        },
-        {
-          line: '16号线',
-          oneLevel: 0,
-          twoLevel: 37,
-          treeLevel: 273,
-          fourLevel: 149,
-          sum: 459,
-        },
-      ],
-      preliminaryTableData: [
-        {
-          line: '11号线',
-          redLevel: 0,
-          orangeLevel: 0,
-          yellowLevel: 0,
-          sum: 0,
-        },
-      ],
-      riskSourceTableData: [
-        {
-          line: '11号线',
-          notPass: 0,
-          passing: 0,
-          passed: 0,
-          sum: 0,
-        },
-      ],
+      riskEventItems: [{}],
+      riskEventComponent: components.markRiskEvent,
+      titleComponent: components.markCusTitle,
+      hiddenDangerTableData: [{}],
+      preliminaryTableData: [{}],
+      riskSourceTableData: [{}],
     });
+    // 隐患统计表格数据查询事件
+    const getHiddenDangerTableData = () => {
+      // TODO axios请求
+      state.hiddenDangerTableData = Data.hiddenDangerTableData;
+    };
+    // 预警统计表格数据查询事件
+    const getPreliminaryTableData = () => {
+      // TODO axios请求
+      state.preliminaryTableData = Data.preliminaryTableData;
+    };
+    // 风险源统计表格数据查询事件
+    const getRiskSourceTableData = () => {
+      // TODO axios请求
+      state.riskSourceTableData = Data.riskSourceTableData;
+    };
+    // 最新风险事件数据查询事件
+    const getRiskEventItemsData = () => {
+      // TODO axios请求
+      state.riskEventItems = Data.riskItemsData;
+    };
     // 自定义标题栏组件点击按钮事件
     const toolTarget = (target: string) => {
       switch (target) {
@@ -325,6 +291,13 @@ export default {
         default: return '';
       }
     };
+    // 挂载之后
+    onMounted(() => {
+      getHiddenDangerTableData();
+      getPreliminaryTableData();
+      getRiskSourceTableData();
+      getRiskEventItemsData();
+    });
 
     return {
       ...toRefs(state),
