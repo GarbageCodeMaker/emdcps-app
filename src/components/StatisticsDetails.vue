@@ -1,9 +1,10 @@
 <template>
-  <div>
+  <div class="statistics-details-panel">
     <!-- 标题组件 -->
     <component
       :is="titleComponent"
       titleType="hiddenDangerDetail"
+      titleHeight="40px"
       @toolTarget="toolTarget">
       <template v-slot:default>隐患统计详情</template>
       <template v-slot:tool>返回</template>
@@ -160,24 +161,28 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.table-card {
-  width: 75%;
-  margin: 0 auto;
-  box-shadow: 3px 3px 6px 0px #ddd;
-  h4 {
-    text-align: center;
-    font-size: 20px;
-    font-weight: normal;
-    height: 35px;
+.statistics-details-panel {
+  display: grid;
+  grid-template-rows: [sdpr1] 40px [sdpr2] 245px [sdpr3] auto [sdpr4];
+  row-gap: 20px;
+  place-items: center center;
+  .table-card {
+    width: 75%;
+    box-shadow: 3px 3px 6px 0px #ddd;
+    h4 {
+      text-align: center;
+      font-size: 20px;
+      font-weight: normal;
+      height: 35px;
+    }
   }
-}
-.echarts-card {
-  width: 75%;
-  margin: 0 auto;
-  box-shadow: 3px 3px 6px 0px #ddd;
-  .charts-item {
-    width: 100%;
-    height: 400px;
+  .echarts-card {
+    width: 75%;
+    box-shadow: 3px 3px 6px 0px #ddd;
+    .charts-item {
+      width: 100%;
+      height: 400px;
+    }
   }
 }
 </style>

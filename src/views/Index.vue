@@ -107,8 +107,7 @@
       <div class="table-card">
         <component
           :is="titleComponent"
-          titleType="riskSource"
-          @toolTarget="toolTarget">
+          titleType="riskSource">
           <template v-slot:default>正在通过风险源统计</template>
         </component>
         <el-table
@@ -243,16 +242,18 @@ export default {
       switch (target) {
         case 'hiddenDanger': {
           const params = {
-            hiddenDangerTableData: state.hiddenDangerTableData,
+            data: state.hiddenDangerTableData,
             to: 'StatisticsDetails',
           };
           context.emit('changeComponent', params);
           break;
         }
         case 'preliminary': {
-          break;
-        }
-        case 'riskSource': {
+          const params = {
+            data: state.preliminaryTableData,
+            to: 'StatisticsDetails',
+          };
+          context.emit('changeComponent', params);
           break;
         }
         default: break;

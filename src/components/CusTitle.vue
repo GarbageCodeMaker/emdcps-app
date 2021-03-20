@@ -10,6 +10,8 @@
 </template>
 
 <script lang="ts" scoped>
+import { reactive, toRefs } from 'vue';
+
 export default {
   name: 'CusTitle',
   props: {
@@ -17,14 +19,23 @@ export default {
       type: String,
       required: true,
     },
+    titleHeight: {
+      type: String,
+      default: '20px',
+    },
   },
   emits: ['toolTarget'],
   setup(props, context) {
+    const state = reactive({
+      cusTitleH: props.titleHeight,
+    });
+
     const handleTool = () => {
       context.emit('toolTarget', props.titleType);
     };
 
     return {
+      ...toRefs(state),
       handleTool,
     };
   },
@@ -32,22 +43,21 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$cusTitleH: 20px;
+$cusTitleH: v-bind(cusTitleH);
 
 .cus-title {
   width: 100%;
   height: $cusTitleH;
   line-height: $cusTitleH;
-  margin-bottom: 10px;
   background-color: #307ecc;
   color: #fff;
   .text {
     letter-spacing: 2px;
-    padding-left: 10px;
+    padding-left: 20px;
   }
   .tool {
     float: right;
-    padding-right: 10px;
+    padding-right: 20px;
     cursor: pointer;
   }
 }

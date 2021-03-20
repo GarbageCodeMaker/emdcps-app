@@ -92,8 +92,9 @@
 
 <script lang="ts" scoped>
 import {
-  defineAsyncComponent, markRaw, reactive, toRefs,
+  defineAsyncComponent, markRaw, onMounted, reactive, toRefs,
 } from 'vue';
+import Data from '../util/data';
 
 export default {
   name: 'Home',
@@ -105,30 +106,13 @@ export default {
       transitionName: 'slide-left',
       Component: markComponents,
       bellNum: 0,
-      leftNavItems: [
-        {
-          index: '1',
-          navName: '首页',
-          path: '/home',
-        },
-        {
-          index: '2',
-          navName: '测试',
-          children: [
-            {
-              index: '2-1',
-              navName: 'test1',
-              path: '/test1',
-            },
-            {
-              index: '2-2',
-              navName: 'test2',
-              path: '/test2',
-            },
-          ],
-        },
-      ],
+      leftNavItems: [{}],
     });
+    // 左侧导航栏数据查询事件
+    const getLeftNavItemsData = () => {
+      // TODO axios请求
+      state.leftNavItems = Data.leftNavItems;
+    };
     // 头部导航栏选择事件
     const headNavSelect = (index: string) => {
       console.log(index);
@@ -138,6 +122,9 @@ export default {
       console.log(index);
       console.log(indexPath);
     };
+    onMounted(() => {
+      getLeftNavItemsData();
+    });
 
     return {
       ...toRefs(state),

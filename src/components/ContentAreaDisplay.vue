@@ -43,7 +43,7 @@ export default {
 
     const changeComponent = (params: any) => {
       state.Component = params.to;
-      state.transferData = params.hiddenDangerTableData;
+      state.transferData = params.data;
     };
 
     return {
