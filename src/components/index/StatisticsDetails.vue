@@ -74,7 +74,7 @@ import * as echarts from 'echarts';
 
 // 导入组件函数
 function importComponent(): object {
-  const cusTitle = defineAsyncComponent(() => import('./CusTitle.vue'));
+  const cusTitle = defineAsyncComponent(() => import('../common/CusTitle.vue'));
 
   return cusTitle;
 }

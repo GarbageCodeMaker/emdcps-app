@@ -4,9 +4,17 @@
     <div id="earth"></div>
     <!-- tabs -->
     <el-tabs type="border-card">
-      <el-tab-pane label="公司简介"></el-tab-pane>
+      <el-tab-pane label="公司简介">
+        <span>{{ companyProfile }}</span>
+      </el-tab-pane>
       <el-tab-pane label="快轨新闻"></el-tab-pane>
-      <el-tab-pane label="通知公告"></el-tab-pane>
+      <el-tab-pane label="通知公告">
+        <component
+          v-for="(item, index) in announcementItems"
+          :key="index"
+          :is="announcementComponent"
+          :announcementData="item.announcementData"></component>
+      </el-tab-pane>
       <el-tab-pane label="最新风险事件">
         <component
           v-for="(item, index) in riskEventItems"
@@ -161,13 +169,15 @@ import {
 import Data from '../util/data';
 
 function importComponent(): object {
-  const cusTitle = defineAsyncComponent(() => import('../components/CusTitle.vue'));
-  const riskEvent = defineAsyncComponent(() => import('../components/RiskEvent.vue'));
+  const cusTitle = defineAsyncComponent(() => import('../components/common/CusTitle.vue'));
+  const riskEvent = defineAsyncComponent(() => import('../components/index/RiskEvent.vue'));
+  const announcement = defineAsyncComponent(() => import('../components/index/Announcement.vue'));
 
   const markCusTitle = markRaw(cusTitle);
   const markRiskEvent = markRaw(riskEvent);
+  const markAnnouncement = markRaw(announcement);
 
-  return { markCusTitle, markRiskEvent };
+  return { markCusTitle, markRiskEvent, markAnnouncement };
 }
 
 export default {
@@ -176,7 +186,10 @@ export default {
   setup(props, context) {
     const components: any = importComponent();
     const state = reactive({
+      companyProfile: '',
+      announcementItems: [{}],
       riskEventItems: [{}],
+      announcementComponent: components.markAnnouncement,
       riskEventComponent: components.markRiskEvent,
       titleComponent: components.markCusTitle,
       hiddenDangerTableData: [{}],
@@ -202,6 +215,15 @@ export default {
     const getRiskEventItemsData = () => {
       // TODO axios请求
       state.riskEventItems = Data.riskItemsData;
+    };
+    // 通知公告数据查询事件
+    const getAnnouncementItemsData = () => {
+      // TODO axios请求
+      state.announcementItems = Data.announcementItemsData;
+    };
+    // 公司简介数据查询事件
+    const getCompanyProfileData = () => {
+      state.companyProfile = Data.companyProfileData;
     };
     // 自定义标题栏组件点击按钮事件
     const toolTarget = (target: string) => {
@@ -297,6 +319,8 @@ export default {
       getPreliminaryTableData();
       getRiskSourceTableData();
       getRiskEventItemsData();
+      getAnnouncementItemsData();
+      getCompanyProfileData();
     });
 
     return {
@@ -343,5 +367,13 @@ export default {
 .yellow-level {
   color: #fff;
   background-color: #c3e213 !important;
+}
+</style>
+
+<style lang="scss" scoped>
+:deep(.el-tab-pane) {
+  overflow-x: hidden;
+  overflow-y: auto;
+  height: 500px;
 }
 </style>

@@ -14,7 +14,7 @@
       v-model="riskEventDetailShow"
       title="预警处置详情"
       destroy-on-close
-      :modal="false"
+      :modal="true"
       @open="getRiskEventDetailData">
       <div class="risk-event-detail-panel">
         <!-- 组织类型 -->
@@ -259,7 +259,7 @@
 import { reactive, toRefs } from 'vue';
 
 export default {
-  name: '',
+  name: 'RiskEvent',
   props: {
     riskEventData: {
       type: Object,

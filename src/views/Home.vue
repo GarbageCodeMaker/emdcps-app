@@ -86,7 +86,12 @@
       </div>
     </el-menu>
     <!-- 页面主体内容展示区 -->
-    <component :is="Component"></component>
+    <component :is="contentAreaDisplayComponent"></component>
+    <!-- 导航栏弹出框组件 -->
+    <component
+      :is="navDialogComponent"
+      :dialogShowControl="dialogShowControl"
+      @dialogShowChange="dialogShowChange"></component>
   </div>
 </template>
 
@@ -96,15 +101,27 @@ import {
 } from 'vue';
 import Data from '../util/data';
 
+function importComponent(): object {
+  const contentAreaDisplay = defineAsyncComponent(() => import('../components/common/ContentAreaDisplay.vue'));
+  const editPassword = defineAsyncComponent(() => import('../components/home/EditPassword.vue'));
+  const userInfo = defineAsyncComponent(() => import('../components/home/UserInfo.vue'));
+
+  const markContentAreaDisplay = markRaw(contentAreaDisplay);
+  const markEditPassword = markRaw(editPassword);
+  const markUserInfo = markRaw(userInfo);
+
+  return { markContentAreaDisplay, markEditPassword, markUserInfo };
+}
+
 export default {
   name: 'Home',
   setup() {
-    const asyncComponents = defineAsyncComponent(() => import('../components/ContentAreaDisplay.vue'));
-    const markComponents = markRaw(asyncComponents);
-
+    const components: any = importComponent();
     const state = reactive({
       transitionName: 'slide-left',
-      Component: markComponents,
+      contentAreaDisplayComponent: components.markContentAreaDisplay,
+      navDialogComponent: components.markEditPassword,
+      dialogShowControl: false,
       bellNum: 0,
       leftNavItems: [{}],
     });
@@ -115,13 +132,29 @@ export default {
     };
     // 头部导航栏选择事件
     const headNavSelect = (index: string) => {
-      console.log(index);
+      switch (index) {
+        case '3-1': {
+          state.navDialogComponent = components.markEditPassword;
+          state.dialogShowControl = true;
+          break;
+        }
+        case '3-2': {
+          state.navDialogComponent = components.markUserInfo;
+          state.dialogShowControl = true;
+          break;
+        }
+        default: break;
+      }
+    };
+    const dialogShowChange = () => {
+      state.dialogShowControl = false;
     };
     // 左侧导航栏选择事件
-    const leftNavSelect = (index: string, indexPath: Array<string>) => {
+    const leftNavSelect = (index: string) => {
       console.log(index);
-      console.log(indexPath);
     };
+
+    // mounted
     onMounted(() => {
       getLeftNavItemsData();
     });
@@ -130,6 +163,7 @@ export default {
       ...toRefs(state),
       headNavSelect,
       leftNavSelect,
+      dialogShowChange,
     };
   },
 };

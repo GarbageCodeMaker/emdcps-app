@@ -1,3 +1,3 @@
-const subComponents: Array<string> = ['StatisticsDetails'];
+const subComponents: Array<string> = ['index/StatisticsDetails'];
 
 export default subComponents;

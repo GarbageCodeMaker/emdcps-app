@@ -644,7 +644,91 @@ const riskItemsData = [
       riskEventDate: '2021-01-31',
     },
   },
+  {
+    riskEventData: {
+      riskEventMsg: '11号线-土建-02标金安桥站隐患',
+      riskEventDate: '2021-01-31',
+    },
+  },
+  {
+    riskEventData: {
+      riskEventMsg: '11号线-土建-01标金顶街站至金安桥站(不含)区间隐患',
+      riskEventDate: '2021-01-31',
+    },
+  },
+  {
+    riskEventData: {
+      riskEventMsg: '机场西延-土建-机场线西延东北区间隐患',
+      riskEventDate: '2021-01-31',
+    },
+  },
+  {
+    riskEventData: {
+      riskEventMsg: '机场西延-土建-机场线西延东北区间隐患',
+      riskEventDate: '2021-01-31',
+    },
+  },
+  {
+    riskEventData: {
+      riskEventMsg: '11号线-土建-01标金顶街站隐患',
+      riskEventDate: '2021-01-31',
+    },
+  },
+  {
+    riskEventData: {
+      riskEventMsg: '玉渊潭东门站16号线-土建-标段1702隐患',
+      riskEventDate: '2021-01-31',
+    },
+  },
+  {
+    riskEventData: {
+      riskEventMsg: '达官营站16号线-土建-标段1902隐患',
+      riskEventDate: '2021-01-31',
+    },
+  },
+  {
+    riskEventData: {
+      riskEventMsg: '红莲南里站16号线-土建-标段2002隐患',
+      riskEventDate: '2021-01-31',
+    },
+  },
+  {
+    riskEventData: {
+      riskEventMsg: '达官营站16号线-土建-标段1902隐患',
+      riskEventDate: '2021-01-31',
+    },
+  },
+  {
+    riskEventData: {
+      riskEventMsg: '红莲南里站16号线-土建-标段2002隐患',
+      riskEventDate: '2021-01-31',
+    },
+  },
 ];
+// 通知公告数据
+const announcementItemsData = [
+  {
+    announcementData: {
+      announcementMsg: '测试-01',
+      announcementDate: '2020-07-28',
+    },
+  },
+];
+// 通知公告详情数据
+const detailItemsData = [
+  {
+    detailItemName: 'aaa',
+    detailItemDate: '2020-03-01',
+  },
+  {
+    detailItemName: 'bbb',
+    detailItemDate: '2020-03-01',
+  },
+];
+// 公司简介数据
+const companyProfileData = `北京城市快轨建设管理有限公司的前身成立于2001年7月，在2012年9月分立出现有公司。该公司资产总额在2015年达5058.50万元。该公司许可经营项目为：建设工程项目管理；一般经营项目为：城市轨道交通的投资、运营管理；设计、制作、代理、发布广告。
+2009年初，基于在机场线建设中锻炼出来的奋发进取的建设团队和丰富扎实的建设经验，该公司被北京市政府指派为北京地铁15号线一期工程的建设单位，并于2010年底、2011年底、2014年底先后开通15号线一期中段（望京西-后沙峪）、东段（后沙峪-俸伯）、西段（望京西-清华东路）。
+截至目前，北京城市快轨建设管理有限公司已建成首都机场线、15号线、16号线北段，合计89.1公里；正在建设16号线南段、机场线西延、22号线，合计86.45公里；管理新机场线A部分及监管B部分，合计41.36公里。“暗挖机械化、新型洞桩法”为企业创新亮点。机场线被评为奥运会残奥会交通保障工作突出贡献奖；15号线获中国土木工程詹天佑大奖；2016年底开通的16号线北段是当年北京唯一开通的轨道交通线路。`;
 
 export default {
   leftNavItems,
@@ -652,4 +736,7 @@ export default {
   preliminaryTableData,
   riskSourceTableData,
   riskItemsData,
+  announcementItemsData,
+  detailItemsData,
+  companyProfileData,
 };

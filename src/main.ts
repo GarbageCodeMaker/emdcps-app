@@ -17,7 +17,8 @@ subViews.forEach((item) => {
 
 subComponents.forEach((item) => {
   const component = defineAsyncComponent(() => import(`@/components/${item}.vue`));
-  app.component(item, component);
+  // 根据components目录下的文件夹划分,需要对字符串进行拆分操作
+  app.component(item.split('/')[1], component);
 });
 
 app.use(ElementPlus)
