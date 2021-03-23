@@ -3,19 +3,19 @@
     <!-- earth -->
     <div id="earth"></div>
     <!-- tabs -->
-    <el-tabs type="border-card">
-      <el-tab-pane label="公司简介">
+    <el-tabs v-model="activeTabName" type="border-card">
+      <el-tab-pane label="公司简介" name="companyProfile">
         <span>{{ companyProfile }}</span>
       </el-tab-pane>
-      <el-tab-pane label="快轨新闻"></el-tab-pane>
-      <el-tab-pane label="通知公告">
+      <el-tab-pane label="快轨新闻" name="fastTrackNews"></el-tab-pane>
+      <el-tab-pane label="通知公告" name="announcement">
         <component
           v-for="(item, index) in announcementItems"
           :key="index"
           :is="announcementComponent"
           :announcementData="item.announcementData"></component>
       </el-tab-pane>
-      <el-tab-pane label="最新风险事件">
+      <el-tab-pane label="最新风险事件" name="riskEvent">
         <component
           v-for="(item, index) in riskEventItems"
           :key="index"
@@ -186,6 +186,7 @@ export default {
   setup(props, context) {
     const components: any = importComponent();
     const state = reactive({
+      activeTabName: 'riskEvent',
       companyProfile: '',
       announcementItems: [{}],
       riskEventItems: [{}],
