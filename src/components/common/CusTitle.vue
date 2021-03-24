@@ -23,11 +23,16 @@ export default {
       type: String,
       default: '20px',
     },
+    titleBGColor: {
+      type: String,
+      default: '#307ecc',
+    },
   },
   emits: ['toolTarget'],
   setup(props, context) {
     const state = reactive({
       cusTitleH: props.titleHeight,
+      cusTitleBGColor: props.titleBGColor,
     });
 
     const handleTool = () => {
@@ -44,12 +49,13 @@ export default {
 
 <style lang="scss" scoped>
 $cusTitleH: v-bind(cusTitleH);
+$cusTitleBGColor: v-bind(cusTitleBGColor);
 
 .cus-title {
   width: 100%;
   height: $cusTitleH;
   line-height: $cusTitleH;
-  background-color: #307ecc;
+  background-color: $cusTitleBGColor;
   color: #fff;
   .text {
     letter-spacing: 2px;

@@ -83,7 +83,7 @@
       </div>
     </el-menu>
     <!-- 页面主体内容展示区 -->
-    <component :is="contentAreaDisplayComponent"></component>
+    <component :is="contentAreaDisplayComponent" ref="contentAreaDisplayRef"></component>
     <!-- 导航栏弹出框组件 -->
     <component
       :is="navDialogComponent"
@@ -94,7 +94,7 @@
 
 <script lang="ts" scoped>
 import {
-  defineAsyncComponent, markRaw, onMounted, reactive, toRefs,
+  defineAsyncComponent, markRaw, onMounted, reactive, Ref, ref, toRefs,
 } from 'vue';
 import Data from '../util/data';
 
@@ -147,8 +147,13 @@ export default {
       state.dialogShowControl = false;
     };
     // 左侧导航栏选择事件
+    const contentAreaDisplayRef: Ref<any> = ref('contentAreaDisplayRef');
     const leftNavSelect = (index: string) => {
-      state.contentAreaDisplayComponent = index;
+      const params = {
+        data: null,
+        to: index,
+      };
+      contentAreaDisplayRef.value.changeComponent(params);
     };
 
     // mounted
