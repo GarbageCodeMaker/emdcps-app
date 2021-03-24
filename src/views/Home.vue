@@ -67,19 +67,16 @@
         <el-menu-item
           v-if="!item.children"
           :index="item.index">
-          <i class="el-icon-setting"></i>
           <template #title>{{ item.navName }}</template>
         </el-menu-item>
         <el-submenu v-else :index="item.index">
           <template #title>
-            <i class="el-icon-setting"></i>
             <span>{{ item.navName }}</span>
           </template>
           <el-menu-item
             v-for="(child, i) in item.children"
             :key="i"
             :index="child.index">
-            <i class="el-icon-setting"></i>
             <template #title>{{ child.navName }}</template>
           </el-menu-item>
         </el-submenu>
@@ -151,7 +148,7 @@ export default {
     };
     // 左侧导航栏选择事件
     const leftNavSelect = (index: string) => {
-      console.log(index);
+      state.contentAreaDisplayComponent = index;
     };
 
     // mounted

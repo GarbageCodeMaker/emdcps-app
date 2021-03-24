@@ -1,7 +1,7 @@
 // 左侧导航栏数据
 const leftNavItems: Array<object> = [
   {
-    index: '1',
+    index: 'Index',
     navName: '首页',
     path: '/home',
   },
@@ -10,9 +10,8 @@ const leftNavItems: Array<object> = [
     navName: '隐患管理',
     children: [
       {
-        index: '2-1',
+        index: 'HiddenDangerReport',
         navName: '隐患上报',
-        path: '/',
       },
       {
         index: '2-2',
