@@ -94,7 +94,7 @@
 
 <script lang="ts" scoped>
 import {
-  defineAsyncComponent, markRaw, onMounted, reactive, Ref, ref, toRefs,
+  defineAsyncComponent, markRaw, onMounted, reactive, ref, toRefs,
 } from 'vue';
 import Data from '../util/data';
 
@@ -147,12 +147,13 @@ export default {
       state.dialogShowControl = false;
     };
     // 左侧导航栏选择事件
-    const contentAreaDisplayRef: Ref<any> = ref('contentAreaDisplayRef');
+    const contentAreaDisplayRef = ref();
     const leftNavSelect = (index: string) => {
       const params = {
         data: null,
         to: index,
       };
+      // 父组件调用子组件方法 changeComponent()
       contentAreaDisplayRef.value.changeComponent(params);
     };
 
@@ -164,6 +165,7 @@ export default {
     return {
       ...toRefs(state),
       headNavSelect,
+      contentAreaDisplayRef,
       leftNavSelect,
       dialogShowChange,
     };

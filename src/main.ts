@@ -2,9 +2,13 @@ import { createApp, defineAsyncComponent } from 'vue';
 // Element-UI
 import ElementPlus from 'element-plus';
 import 'element-plus/lib/theme-chalk/index.css';
+// Animate.css
+// import animate from 'animate.css';
+
 import App from './App.vue';
 import router from './router';
 import store from './store';
+// custom import
 import subViews from './util/subViews';
 import subComponents from './util/subComponents';
 
@@ -22,6 +26,7 @@ subComponents.forEach((item) => {
 });
 
 app.use(ElementPlus)
+  // .use(animate)
   .use(store)
   .use(router)
   .mount('#app');
