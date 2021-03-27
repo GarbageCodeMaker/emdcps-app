@@ -2,7 +2,7 @@
   <div class="hidden-danger-report-panel">
     <!-- Tree -->
     <article class="tree-panel">
-      <!-- 树标题 -->
+      <!-- 隐患分类树标题 -->
       <component
         :is="titleComponent"
         titleType="hiddenDangerSort"
@@ -25,17 +25,109 @@
         :is="titleComponent"
         titleType="hiddenDangerIndexQuery"
         @toolTarget="toolTarget">
-        <template v-slot:default>隐患分类</template>
+        <template v-slot:default>隐患指标查询</template>
         <template v-slot:tool>
-          <transition>
-            <i v-if="!isFold" class="el-icon-caret-top"></i>
-            <i v-else class="el-icon-caret-bottom"></i>
-          </transition>
+          <!-- 自定义动画过渡组件进行包裹 -->
+          <component :is="animateComponent">
+            <i
+              v-if="!isFold"
+              key="iconTop"
+              class="el-icon-caret-top"></i>
+            <i
+              v-else
+              key="iconBottom"
+              class="el-icon-caret-bottom"></i>
+          </component>
         </template>
       </component>
+      <!-- 搜索栏内容 -->
+      <section class="search-content">
+        <!-- 隐患级别 -->
+        <div>
+          <label for="hiddenDangerLevel">隐患级别:</label>
+          <el-select
+            id="hiddenDangerLevel"
+            v-model="searchFormData.hiddenDangerLevel"
+            placeholder="请选择隐患级别">
+            <el-option
+              v-for="(item, index) in hiddenDangerLevels"
+              :key="index"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+        </div>
+        <!-- 排查项目 -->
+        <div>
+          <label for="checkItem">排查项目:</label>
+          <el-input
+            id="checkItem"
+            v-model="searchFormData.checkItem"
+            placeholder="请输入排查项目"></el-input>
+        </div>
+        <!-- 排查内容 -->
+        <div>
+          <label for="checkContent">排查内容:</label>
+          <el-input
+            id="checkContent"
+            v-model="searchFormData.checkContent"
+            placeholder="请输入排查内容"></el-input>
+        </div>
+        <!-- 整改期限 -->
+        <div>
+          <label for="rectificationPeriod">整改期限:</label>
+          <el-date-picker
+            id="rectificationPeriod"
+            v-model="searchFormData.rectificationPeriod"
+            type="datetimerange"
+            range-separator="至"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期">
+          </el-date-picker>
+        </div>
+        <!-- 扣分 -->
+        <div>
+          <label for="deductionRange">扣分:</label>
+          <div class="deduction-range-item">
+            <el-input-number
+              v-model="searchFormData.deductionRangeStart"
+              :min="0"
+              :max="10"
+              controls-position="right"
+              placeholder="起始分数"></el-input-number>
+            <span class="range-separator">至</span>
+            <el-input-number
+              v-model="searchFormData.deductionRangeEnd"
+              :min="1"
+              :max="10"
+              controls-position="right"
+              placeholder="终止分数"></el-input-number>
+          </div>
+        </div>
+        <!-- 按钮 -->
+        <div>
+          <div class="search-tool-btn">
+            <el-button
+              type="primary"
+              :loading="searchQuerying"
+              :disabled="searchQuerying"
+              @click="searchQuery">查询</el-button>
+            <el-button
+              type="info"
+              @click="searchReset">重置</el-button>
+          </div>
+        </div>
+      </section>
     </article>
     <!-- Table -->
-    <section class="table-panel"></section>
+    <section class="table-panel">
+      <!-- 隐患指标列表标题 -->
+      <component
+        :is="titleComponent"
+        titleType="hiddenDangerIndexTable">
+        <template v-slot:default>隐患指标列表</template>
+      </component>
+    </section>
   </div>
 </template>
 
@@ -47,10 +139,12 @@ import Data from '../util/data';
 
 function importComponent(): object {
   const cusTitle = defineAsyncComponent(() => import('../components/common/CusTitle.vue'));
+  const cusAnimate = defineAsyncComponent(() => import('../components/common/CusAnimate.vue'));
 
   const markCusTitle = markRaw(cusTitle);
+  const markCusAnimate = markRaw(cusAnimate);
 
-  return { markCusTitle };
+  return { markCusTitle, markCusAnimate };
 }
 
 export default {
@@ -59,12 +153,23 @@ export default {
     const components: any = importComponent();
     const state = reactive({
       titleComponent: components.markCusTitle,
+      animateComponent: components.markCusAnimate,
       hiddenDangerReportTreeData: [{}],
       hiddenDangerReportTreeDataProps: {
         label: 'label',
         children: 'children',
       },
       isFold: false,
+      searchFormData: {
+        hiddenDangerLevel: '',
+        checkItem: '',
+        checkContent: '',
+        rectificationPeriod: '',
+        deductionRangeStart: undefined,
+        deductionRangeEnd: undefined,
+      },
+      hiddenDangerLevels: [{}],
+      searchQuerying: false,
     });
 
     // 隐患上报树型数据查询事件
@@ -87,16 +192,38 @@ export default {
         default: break;
       }
     };
+    // 隐患级别选项数据查询事件
+    const getHiddenDangerLevels = () => {
+      // TODO axios请求
+      state.hiddenDangerLevels = Data.hiddenDangerLevels;
+    };
+    // 隐患上报搜索栏查询事件
+    const searchQuery = () => {
+      // TODO axios请求
+      state.searchQuerying = true;
+    };
+    // 隐患上报搜索栏重置事件
+    const searchReset = () => {
+      state.searchFormData.hiddenDangerLevel = '';
+      state.searchFormData.checkItem = '';
+      state.searchFormData.checkContent = '';
+      state.searchFormData.rectificationPeriod = '';
+      state.searchFormData.deductionRangeStart = undefined;
+      state.searchFormData.deductionRangeEnd = undefined;
+    };
 
     // 挂载之后
     onMounted(() => {
       getHiddenDangerReportTreeData();
+      getHiddenDangerLevels();
     });
 
     return {
       ...toRefs(state),
       handleTreeNode,
       toolTarget,
+      searchQuery,
+      searchReset,
     };
   },
 };
@@ -120,10 +247,35 @@ export default {
     grid-column-end: hdrpc2;
   }
   .search-panel {
+    display: grid;
+    grid-template-rows: 20px auto;
     grid-row-start: hdrpr1;
     grid-row-end: hdrpr2;
     grid-column-start: hdrpc2;
     grid-column-end: hdrpc3;
+    .search-content {
+      display: grid;
+      grid-template-rows: 50% 50%;
+      grid-template-columns: repeat(3, 33.33%);
+      place-items: center end;
+      > div {
+        display: grid;
+        grid-template-columns: [hdrpspscdc1] 20% [hdrpspscdc2] 80% [hdrpspscdc3];
+        place-items: center end;
+        width: 80%;
+        margin: 0 auto;
+        .deduction-range-item {
+          width: 95%;
+          .range-separator {
+            margin: 0 4% 0 4%;
+          }
+        }
+        .search-tool-btn {
+          grid-column-start: hdrpspscdc2;
+          grid-column-end: hdrpspscdc3;
+        }
+      }
+    }
   }
   .table-panel {
     grid-row-start: hdrpr2;
@@ -131,5 +283,20 @@ export default {
     grid-column-start: hdrpc2;
     grid-column-end: hdrpc3;
   }
+}
+</style>
+
+<style lang="scss" scoped>
+:deep(.el-select) {
+  width: 95%;
+}
+:deep(.el-select .el-input) {
+  width: 100%;
+}
+:deep(.el-input) {
+  width: 95%;
+}
+:deep(.el-date-editor) {
+  width: 95%;
 }
 </style>

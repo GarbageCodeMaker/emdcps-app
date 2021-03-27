@@ -844,6 +844,21 @@ const hiddenDangerReportTreeData = [
     ],
   },
 ];
+// 隐患上报搜索栏隐患等级选项数据
+const hiddenDangerLevels = [
+  {
+    value: '1',
+    label: '低',
+  },
+  {
+    value: '2',
+    label: '中',
+  },
+  {
+    value: '3',
+    label: '高',
+  },
+];
 
 export default {
   leftNavItems,
@@ -855,4 +870,5 @@ export default {
   detailItemsData,
   companyProfileData,
   hiddenDangerReportTreeData,
+  hiddenDangerLevels,
 };
