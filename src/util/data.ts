@@ -859,6 +859,39 @@ const hiddenDangerLevels = [
     label: '高',
   },
 ];
+// 隐患指标列表数据
+const hiddenDangerIndexTableData = [
+  {
+    firstLevelSort: '安全',
+    secondLevelSort: '疫情防控',
+    hiddenDangerLevel: '03',
+    checkItem: '流程公示牌',
+    checkContent: '是否制作疫情处置流程公示牌，并在工地出入口显著位置进行公示.',
+    deductionAmount: '0',
+    rectificationPeriod: '3',
+    deductionFraction: '2',
+  },
+  {
+    firstLevelSort: '安全',
+    secondLevelSort: '疫情防控',
+    hiddenDangerLevel: '03',
+    checkItem: '流程公示牌',
+    checkContent: '是否制作疫情处置流程公示牌，并在工地出入口显著位置进行公示.',
+    deductionAmount: '0',
+    rectificationPeriod: '3',
+    deductionFraction: '2',
+  },
+  {
+    firstLevelSort: '安全',
+    secondLevelSort: '疫情防控',
+    hiddenDangerLevel: '03',
+    checkItem: '流程公示牌',
+    checkContent: '是否制作疫情处置流程公示牌，并在工地出入口显著位置进行公示.',
+    deductionAmount: '0',
+    rectificationPeriod: '3',
+    deductionFraction: '2',
+  },
+];
 
 export default {
   leftNavItems,
@@ -871,4 +904,5 @@ export default {
   companyProfileData,
   hiddenDangerReportTreeData,
   hiddenDangerLevels,
+  hiddenDangerIndexTableData,
 };

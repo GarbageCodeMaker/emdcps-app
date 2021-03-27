@@ -77,7 +77,6 @@
         <div>
           <label for="rectificationPeriod">整改期限:</label>
           <el-date-picker
-            id="rectificationPeriod"
             v-model="searchFormData.rectificationPeriod"
             type="datetimerange"
             range-separator="至"
@@ -127,13 +126,58 @@
         titleType="hiddenDangerIndexTable">
         <template v-slot:default>隐患指标列表</template>
       </component>
+      <!-- 隐患指标列表 -->
+      <el-table
+        :data="hiddenDangerIndexTableData"
+        stripe
+        border>
+        <el-table-column
+          type="selection"
+          width="55"
+          align="center"></el-table-column>
+        <el-table-column type="index" align="center"></el-table-column>
+        <el-table-column
+          prop="firstLevelSort"
+          label="一级分类"
+          align="center"></el-table-column>
+        <el-table-column
+          prop="secondLevelSort"
+          label="二级分类"
+          align="center"></el-table-column>
+        <el-table-column
+          prop="hiddenDangerLevel"
+          label="隐患级别"
+          align="center"></el-table-column>
+        <el-table-column
+          prop="checkItem"
+          label="排查项目"
+          align="center"
+          show-overflow-tooltip></el-table-column>
+        <el-table-column
+          prop="checkContent"
+          label="排查内容"
+          align="center"
+          show-overflow-tooltip></el-table-column>
+        <el-table-column
+          prop="deductionAmount"
+          label="扣款金额"
+          align="center"></el-table-column>
+        <el-table-column
+          prop="rectificationPeriod"
+          label="整改期限(天)"
+          align="center"></el-table-column>
+        <el-table-column
+          prop="deductionFraction"
+          label="扣分"
+          align="center"></el-table-column>
+      </el-table>
     </section>
   </div>
 </template>
 
 <script lang="ts" scoped>
 import {
-  defineAsyncComponent, markRaw, onMounted, reactive, toRefs,
+  defineAsyncComponent, markRaw, onBeforeMount, onMounted, reactive, toRefs,
 } from 'vue';
 import Data from '../util/data';
 
@@ -170,6 +214,7 @@ export default {
       },
       hiddenDangerLevels: [{}],
       searchQuerying: false,
+      hiddenDangerIndexTableData: [{}],
     });
 
     // 隐患上报树型数据查询事件
@@ -211,11 +256,20 @@ export default {
       state.searchFormData.deductionRangeStart = undefined;
       state.searchFormData.deductionRangeEnd = undefined;
     };
+    // 隐患指标列表查询数据事件
+    const getHiddenDangerIndexTableData = () => {
+      state.hiddenDangerIndexTableData = Data.hiddenDangerIndexTableData;
+    };
 
+    // 挂载之前
+    onBeforeMount(() => {
+      // 为解决el-select组件中label&value取值为undefined的问题
+      getHiddenDangerLevels();
+    });
     // 挂载之后
     onMounted(() => {
       getHiddenDangerReportTreeData();
-      getHiddenDangerLevels();
+      getHiddenDangerIndexTableData();
     });
 
     return {
@@ -224,6 +278,7 @@ export default {
       toolTarget,
       searchQuery,
       searchReset,
+      getHiddenDangerIndexTableData,
     };
   },
 };
